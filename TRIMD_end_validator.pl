@@ -107,7 +107,7 @@ my %chroms;
 while (my $line = <INF>) {
     chomp($line);
     my @cols = split("\t", $line);
-    next if ($cols[0] eq "\@HD" || $cols[0] eq "\@PG" || $cols[0] eq "\@SQ"); #skips SAM file header lines
+    next if ($cols[0] eq "\@HD" || $cols[0] eq "\@PG" || $cols[0] eq "\@SQ" || $cols[0] eq "\@CO"); #skips SAM file header lines
     next if ($cols[2] eq "*"); #skips unmapped CFLs
     next if (exists $chroms{$cols[2]});
     $chroms{$cols[2]} = 1;
@@ -125,7 +125,7 @@ print "Extracting Illumina reads with at least $min_As As and at least $min_soft
 while (my $line = <INF>) {
     chomp($line);
     my @cols = split("\t", $line);
-    next if ($cols[0] eq "\@HD" || $cols[0] eq "\@PG" || $cols[0] eq "\@SQ"); #skips SAM file header lines
+    next if ($cols[0] eq "\@HD" || $cols[0] eq "\@PG" || $cols[0] eq "\@SQ" || $cols[0] eq "\@CO"); #skips SAM file header lines
     if ($cols[1] == 81 || $cols[1] == 83 || $cols[1] == 89 || $cols[1] == 16) {  #selects reads with FLAG codes indicating they are first in pair on the plus strand
         if (($cols[5] =~ m/\d+S$/) and ($cols[9] =~ m/A{$min_As}$/)) { # selects reads with softclipping and a run of As at the end
             my ($softclips) = $cols[5] =~ m/(\d+)S$/; #pulls out the number of softclipped bases
